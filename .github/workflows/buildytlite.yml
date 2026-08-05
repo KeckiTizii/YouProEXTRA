@@ -80,6 +80,18 @@ on:
         required: false
         type: boolean
 
+      ytweaks:
+        description: "Integrate YTweaks"
+        default: true
+        required: false
+        type: boolean
+
+      pdstm:
+        description: "Integrate PleaseDontStopTheMusic"
+        default: true
+        required: false
+        type: boolean
+
       ythold:
         description: "Integrate YTHoldForSpeed"
         default: false
@@ -94,6 +106,12 @@ on:
 
       nativeshare:
         description: "Integrate YTNativeShare"
+        default: false
+        required: false
+        type: boolean
+      
+      youfixplaybackissues:
+        description: "Integrate YouFixPlaybackIssues"
         default: false
         required: false
         type: boolean
@@ -227,6 +245,8 @@ jobs:
           youchoose_commit: ${{ steps.commit_hashes.outputs.youchoose }}
           gonerino_commit: ${{ steps.commit_hashes.outputs.gonerino }}
           yougetcaption_commit: ${{ steps.commit_hashes.outputs.yougetcaption }}
+          ytweaks_commit: ${{ steps.commit_hashes.outputs.ytweaks }}
+          pdstm: ${{ steps.commit_hashes.outputs.pdstm }}
           ytabconfig_commit: ${{ steps.commit_hashes.outputs.ytabconfig }}
           youquality_commit: ${{ steps.commit_hashes.outputs.youquality }}
           demc_commit: ${{ steps.commit_hashes.outputs.demc }}
@@ -311,6 +331,20 @@ jobs:
           git clone --quiet --depth=1 https://github.com/PoomSmart/YouGetCaption.git
           cd YouGetCaption && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ${{ github.workspace }}/ygc.deb
+      
+      - name: Clone and Build YTweaks
+        if: inputs.ytweaks == true && steps.cache_tweaks.outputs.cache_ytweaks_hit != 'true'
+        run: |
+          git clone --quiet --depth=1 https://github.com/fosterbarnes/YTweaks
+          cd YTweaks && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          mv packages/*.deb ${{ github.workspace }}/ytwks.deb
+
+      - name: Clone and Build PleaseDontStopTheMusic
+        if: inputs.pdstm == true && steps.cache_tweaks.outputs.cache_pdstm_hit != 'true'
+        run: |
+          git clone --quiet --depth=1 https://github.com/mikey820/PleaseDontStopTheMusic
+          cd PleaseDontStopTheMusic && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          mv packages/*.deb ${{ github.workspace }}/pdstm.deb
 
       - name: Clone and Build DontEatMyContent
         if: inputs.demc == true && steps.cache_tweaks.outputs.cache_demc_hit != 'true'
@@ -343,7 +377,7 @@ jobs:
           mv packages/*.deb ${{ github.workspace }}/nativeshare.deb
 
       - name: Clone and Build YouFixPlaybackIssues
-        if: steps.cache_tweaks.outputs.cache_youfixplaybackissues_hit != 'true'
+        if: inputs.youfixplaybackissues == true && steps.cache_tweaks.outputs.cache_youfixplaybackissues_hit != 'true'
         run: |
           git clone --quiet --depth=1 https://github.com/mrdrvt99/YouFixPlaybackIssues.git
           cd YouFixPlaybackIssues/YouFixPlaybackIssues && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless TARGET=iphone:clang:18.6:15.0
