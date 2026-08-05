@@ -246,7 +246,7 @@ jobs:
           gonerino_commit: ${{ steps.commit_hashes.outputs.gonerino }}
           yougetcaption_commit: ${{ steps.commit_hashes.outputs.yougetcaption }}
           ytweaks_commit: ${{ steps.commit_hashes.outputs.ytweaks }}
-          pdstm: ${{ steps.commit_hashes.outputs.pdstm }}
+          pdstm_commit: ${{ steps.commit_hashes.outputs.pdstm }}
           ytabconfig_commit: ${{ steps.commit_hashes.outputs.ytabconfig }}
           youquality_commit: ${{ steps.commit_hashes.outputs.youquality }}
           demc_commit: ${{ steps.commit_hashes.outputs.demc }}
