@@ -380,7 +380,8 @@ jobs:
         if: inputs.youfixplaybackissues == true && steps.cache_tweaks.outputs.cache_youfixplaybackissues_hit != 'true'
         run: |
           git clone --quiet --depth=1 https://github.com/AppropriateNet2928/YTLitePlusRenewed.git
-          cd YTLitePlusRenewed/YouFixPlaybackIssues && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless TARGET=iphone:clang:18.6:15.0          mv packages/*.deb ${{ github.workspace }}/youfixplaybackissues.deb
+          cd YTLitePlusRenewed/YouFixPlaybackIssues && make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless TARGET=iphone:clang:18.6:15.0
+          mv packages/*.deb ${{ github.workspace }}/youfixplaybackissues.deb
           
       - name: Inject Tweaks Into IPA
         run: |
